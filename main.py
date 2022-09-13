@@ -1,30 +1,66 @@
+from distutils.util import execute
 import requests
 import tkinter
-from functions import *
+import sqlite3
+
+try:
+    connection = sqlite3.connect("./app.sqlite")
+    print("Connection to SQLite DB successful")
+except sqlite3.Error as e:
+    print(f"The error '{e}' occurred")
+
+def execute_query(connection, query):
+    cursor = connection.cursor()
+    try:
+        cursor.execute(query)
+        connection.commit()
+        print("Query executed successfully")
+    except sqlite3.Error as e:
+        print(f"The error '{e}' occurred")
+
+create_users_table = """
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  username TEXT NOT NULL,
+  password TEXT NOT NULL
+);
+"""
+execute_query(connection,create_users_table)
+
+
+
+
+
+
+
 
 window = tkinter.Tk()
 window.title("Habit Tracker")
 
-
 def Login():
     pass
 
-def Signup(usernameEntry,usernameLabel):
+def Signup():
+    global usernameEntry
+    global passwordEntry
     url="https://pixe.la/v1/users"
     params={
-        "token": usernameEntry.get(),
-        "username": usernameLabel["text"],
+        "token": passwordEntry.get(),
+        "username": usernameEntry.get(),
         "agreeTermsOfService"  : "yes",
         "notminor":"yes"
         }
     print(params)
 
-    response=requests.post(url,params=params)
-    print(response)
+    response=requests.post(url,json=params)
+    if response.status_code==200:
+        
 
 
 
 def onClickLogin():
+    global usernameEntry
+    global passwordEntry
     btn1.destroy()
     btn2.destroy()
     lbl1.config(text="Login")
@@ -48,6 +84,8 @@ def onClickLogin():
     loginButton.grid(row=3, column=2, columnspan=2, pady=20)
 
 def onClickSignup():
+    global usernameEntry
+    global passwordEntry
     btn1.destroy()
     btn2.destroy()
     lbl1.config(text="Signup")
@@ -66,9 +104,10 @@ def onClickSignup():
         width=20,
         height=3,
         font=("Montserrat", 15),
-        command=Signup(usernameEntry,usernameLabel),
+        command=Signup,
     )
     signupButton.grid(row=3, column=1, columnspan=2, pady=20)
+
 
 
 # Create label
