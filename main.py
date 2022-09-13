@@ -39,6 +39,30 @@ CREATE TABLE IF NOT EXISTS users (
 """
 execute_query(connection, create_users_table)
 
+def setup():
+    lbl1.config(text="Enter habit details")
+    lbl1.grid(row=0,column=1,columnspan=2)
+    habitLabel=tkinter.Label(window,text="Select a habit")
+    habitOptions=["Reading","Cycling", "Art"]
+    habitClicked=tkinter.StringVar()
+    habitClicked.set("Reading")
+    habitDrop=tkinter.OptionMenu(window,habitClicked,*habitOptions)
+    habitLabel.grid(row=1,column=1)
+    habitDrop.grid(row=1,column=1)
+    colorOptions=["shibafu","momiji","sora","ichou","ajisai","kuro"]
+    colorClicked=tkinter.StringVar()
+    colorClicked.set("shibafu")
+    colorLabel=tkinter.Label(window,text="Select a color")
+    colorDrop=tkinter.OptionMenu(window,colorClicked,*colorOptions)
+    habitButton=tkinter.Button(
+        window,
+        text="Create Habit",
+        width=20,
+        height=3,
+        font=("Montserrat", 15))
+
+
+
 def afterSignup():
     lbl1.config(text="Signup Successful")
     usernameEntry.destroy()
@@ -46,6 +70,7 @@ def afterSignup():
     passwordEntry.destroy()
     passwordLabel.destroy()
     signupButton.destroy()
+    setup()
 
 def afterLogin():
     lbl1.config(text="Login Successful")
@@ -54,10 +79,6 @@ def afterLogin():
     passwordEntry.destroy()
     passwordLabel.destroy()
     loginButton.destroy()
-
-window = tkinter.Tk()
-window.title("Habit Tracker")
-
 
 def Login():
     global usernameEntry
@@ -150,6 +171,8 @@ def onClickSignup():
     )
     signupButton.grid(row=3, column=1, columnspan=2, pady=20)
 
+window = tkinter.Tk()
+window.title("Habit Tracker")
 
 # Create label
 lbl1 = tkinter.Label(
