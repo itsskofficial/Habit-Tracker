@@ -51,7 +51,7 @@ def createHabit():
         unit=""
     params={
         "id":"212829",
-        "name":{habitDrop.get()},
+        "name":habitDrop.get(),
         "unit":unit,
         "type":"float",
         "color":colorDrop.get()
@@ -70,6 +70,7 @@ def setup():
     global habitOptions
     global colorClicked
     global colorDrop
+    global habitButton
     lbl1.config(text="Enter habit details")
     lbl1.grid(row=0,column=1,columnspan=2)
     habitLabel=tkinter.Label(window,text="Select a habit")
@@ -89,10 +90,12 @@ def setup():
         text="Create Habit",
         width=20,
         height=3,
-        font=("Montserrat", 15))
+        font=("Montserrat", 15),
+        command=createHabit
+        )
     colorLabel.grid(row=2,column=1)
     colorDrop.grid(row=2,column=1)
-    habitButton.grid(row=3,column=1,columnspan=2,command=createHabit)
+    habitButton.grid(row=3,column=1,columnspan=2)
 
 
 
