@@ -9,6 +9,17 @@ except sqlite3.Error as e:
     print(f"The error '{e}' occurred")
 
 
+def execute_read_query(connection, query):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query)
+        result = cursor.fetchall()
+        return result
+    except sqlite3.Error as e:
+        print(f"The error '{e}' occurred")
+
+
 def execute_query(connection, query):
     cursor = connection.cursor()
     try:
@@ -28,6 +39,11 @@ CREATE TABLE IF NOT EXISTS users (
 """
 execute_query(connection, create_users_table)
 
+def afterSignup():
+    pass
+
+def afterLogin():
+    pass
 
 window = tkinter.Tk()
 window.title("Habit Tracker")
@@ -37,10 +53,11 @@ def Login():
     global usernameEntry
     global passwordEntry
     find_user = f"""
-    SELECT 1 FROM users where username = '{usernameEntry.get()}'
+    SELECT users.username,users.password FROM users WHERE users.username='{usernameEntry.get()}'
     """
-    status = execute_query(connection, find_user)
-    print(status)
+    status = execute_read_query(connection, find_user)
+    if len(status) != 0:
+        afterLogin()
 
 
 def Signup():
