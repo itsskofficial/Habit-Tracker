@@ -40,10 +40,20 @@ CREATE TABLE IF NOT EXISTS users (
 execute_query(connection, create_users_table)
 
 def afterSignup():
-    pass
+    lbl1.config(text="Signup Successful")
+    usernameEntry.destroy()
+    usernameLabel.destroy()
+    passwordEntry.destroy()
+    passwordLabel.destroy()
+    signupButton.destroy()
 
 def afterLogin():
-    pass
+    lbl1.config(text="Login Successful")
+    usernameEntry.destroy()
+    usernameLabel.destroy()
+    passwordEntry.destroy()
+    passwordLabel.destroy()
+    loginButton.destroy()
 
 window = tkinter.Tk()
 window.title("Habit Tracker")
@@ -56,7 +66,7 @@ def Login():
     SELECT users.username,users.password FROM users WHERE users.username='{usernameEntry.get()}'
     """
     status = execute_read_query(connection, find_user)
-    if len(status) != 0:
+    if status[0][0]==usernameEntry.get() and status[0][1]==passwordEntry.get():
         afterLogin()
 
 
@@ -86,6 +96,9 @@ def Signup():
 def onClickLogin():
     global usernameEntry
     global passwordEntry
+    global usernameLabel
+    global passwordLabel
+    global loginButton
     btn1.destroy()
     btn2.destroy()
     lbl1.config(text="Login")
@@ -112,6 +125,9 @@ def onClickLogin():
 def onClickSignup():
     global usernameEntry
     global passwordEntry
+    global usernameLabel
+    global usernameEntry
+    global signupButton
     btn1.destroy()
     btn2.destroy()
     lbl1.config(text="Signup")
