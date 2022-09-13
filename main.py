@@ -39,7 +39,37 @@ CREATE TABLE IF NOT EXISTS users (
 """
 execute_query(connection, create_users_table)
 
+def createHabit():
+    global usernameEntry
+    global passwordEntry
+    url=f"https://pixe.la/v1/users/{usernameEntry.get()}/graphs"
+    if habitDrop.get()=="Reading":
+        unit="Page"
+    elif habitDrop.get()=="Cycling":
+        unit="Km"
+    else:
+        unit=""
+    params={
+        "id":"212829",
+        "name":{habitDrop.get()},
+        "unit":unit,
+        "type":"float",
+        "color":colorDrop.get()
+    }
+    headers={
+        "X-USER-TOKEN":passwordEntry.get()
+    }
+    response=requests.post(url=url,json=params,headers=headers)
+    print(response)
+
 def setup():
+    global habitLabel
+    global habitDrop
+    global habitOptions
+    global habitClicked
+    global habitOptions
+    global colorClicked
+    global colorDrop
     lbl1.config(text="Enter habit details")
     lbl1.grid(row=0,column=1,columnspan=2)
     habitLabel=tkinter.Label(window,text="Select a habit")
@@ -62,7 +92,7 @@ def setup():
         font=("Montserrat", 15))
     colorLabel.grid(row=2,column=1)
     colorDrop.grid(row=2,column=1)
-    habitButton.grid(row=3,column=1,columnspan=2)
+    habitButton.grid(row=3,column=1,columnspan=2,command=createHabit)
 
 
 
