@@ -34,7 +34,13 @@ window.title("Habit Tracker")
 
 
 def Login():
-    pass
+    global usernameEntry
+    global passwordEntry
+    find_user = f"""
+    SELECT 1 FROM users where username = '{usernameEntry.get()}'
+    """
+    status = execute_query(connection, find_user)
+    print(status)
 
 
 def Signup():
@@ -47,7 +53,6 @@ def Signup():
         "agreeTermsOfService": "yes",
         "notminor": "yes",
     }
-    print(params)
 
     response = requests.post(url, json=params)
     print(response.status_code)
