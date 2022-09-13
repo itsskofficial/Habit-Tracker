@@ -54,8 +54,13 @@ def Signup():
 
     response=requests.post(url,json=params)
     if response.status_code==200:
-        
-
+        create_users = f"""
+        INSERT INTO
+            users (username, password)
+        VALUES
+            ({params["username"]},{params["token"]})
+            """
+        execute_query(connection,create_users)
 
 
 def onClickLogin():
