@@ -1,4 +1,3 @@
-from distutils.util import execute
 import requests
 import tkinter
 import sqlite3
@@ -9,6 +8,7 @@ try:
 except sqlite3.Error as e:
     print(f"The error '{e}' occurred")
 
+
 def execute_query(connection, query):
     cursor = connection.cursor()
     try:
@@ -18,6 +18,7 @@ def execute_query(connection, query):
     except sqlite3.Error as e:
         print(f"The error '{e}' occurred")
 
+
 create_users_table = """
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,42 +26,39 @@ CREATE TABLE IF NOT EXISTS users (
   password TEXT NOT NULL
 );
 """
-execute_query(connection,create_users_table)
-
-
-
-
-
-
+execute_query(connection, create_users_table)
 
 
 window = tkinter.Tk()
 window.title("Habit Tracker")
 
+
 def Login():
     pass
+
 
 def Signup():
     global usernameEntry
     global passwordEntry
-    url="https://pixe.la/v1/users"
-    params={
+    url = "https://pixe.la/v1/users"
+    params = {
         "token": passwordEntry.get(),
         "username": usernameEntry.get(),
-        "agreeTermsOfService"  : "yes",
-        "notminor":"yes"
-        }
+        "agreeTermsOfService": "yes",
+        "notminor": "yes",
+    }
     print(params)
 
-    response=requests.post(url,json=params)
-    if response.status_code==200:
+    response = requests.post(url, json=params)
+    print(response.status_code)
+    if response.status_code == 200:
         create_users = f"""
-        INSERT INTO
+        INSERT INTO 
             users (username, password)
-        VALUES
-            ({params["username"]},{params["token"]})
+        VALUES 
+            ('{params["username"]}','{params["token"]}')
             """
-        execute_query(connection,create_users)
+        execute_query(connection, create_users)
 
 
 def onClickLogin():
@@ -88,6 +86,7 @@ def onClickLogin():
     )
     loginButton.grid(row=3, column=2, columnspan=2, pady=20)
 
+
 def onClickSignup():
     global usernameEntry
     global passwordEntry
@@ -114,7 +113,6 @@ def onClickSignup():
     signupButton.grid(row=3, column=1, columnspan=2, pady=20)
 
 
-
 # Create label
 lbl1 = tkinter.Label(
     window,
@@ -136,7 +134,12 @@ btn1 = tkinter.Button(
     command=onClickLogin,
 )
 btn2 = tkinter.Button(
-    window, text="Signup", width=20, height=3, font=("Montserrat", 15),command=onClickSignup,
+    window,
+    text="Signup",
+    width=20,
+    height=3,
+    font=("Montserrat", 15),
+    command=onClickSignup,
 )
 btn1.grid(row=1, column=1, pady=20)
 btn2.grid(row=2, column=1, pady=20)
