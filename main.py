@@ -60,10 +60,18 @@ def setup():
         width=20,
         height=3,
         font=("Montserrat", 15))
+    colorLabel.grid(row=2,column=1)
+    colorDrop.grid(row=2,column=1)
+    habitButton.grid(row=3,column=1,columnspan=2)
 
 
 
 def afterSignup():
+    global usernameEntry
+    global passwordEntry
+    global usernameLabel
+    global passwordLabel
+    global signupButton
     lbl1.config(text="Signup Successful")
     usernameEntry.destroy()
     usernameLabel.destroy()
@@ -112,6 +120,7 @@ def Signup():
             ('{params["username"]}','{params["token"]}')
             """
         execute_query(connection, create_users)
+    afterSignup()
 
 
 def onClickLogin():
@@ -146,6 +155,7 @@ def onClickLogin():
 def onClickSignup():
     global usernameEntry
     global passwordEntry
+    global passwordLabel
     global usernameLabel
     global usernameEntry
     global signupButton
